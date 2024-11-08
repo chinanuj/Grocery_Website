@@ -13,7 +13,7 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post('http://localhost:5001/api/contact', { name, email, message });
+      const response = await api.post('/api/contact', { name, email, message });
       if (response.data.message) {
         setAlert({ type: 'success', message: response.data.message });
         setName('');

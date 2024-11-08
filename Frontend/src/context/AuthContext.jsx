@@ -26,7 +26,7 @@ const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
-      const response = await api.post('http://localhost:5001/api/auth/login', credentials);
+      const response = await api.post('/api/auth/login', credentials);
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
         const decoded = jwtDecode(response.data.token); // Correct usage
@@ -41,7 +41,7 @@ const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      const response = await api.post('http://localhost:5001/api/auth/register', userData);
+      const response = await api.post('/api/auth/register', userData);
       if (response.status === 201) {
         return { success: true, message: response.data.message };
       }

@@ -17,7 +17,7 @@ const Products = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await api.get('http://localhost:5001/api/products');
+      const response = await api.get('/api/products');
       setProducts(response.data.products);
     } catch (error) {
       setAlert({
