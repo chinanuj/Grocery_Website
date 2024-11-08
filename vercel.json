@@ -4,7 +4,16 @@
     { "source": "/(.*)", "destination": "/Frontend/$1" }
   ],
   "builds": [
-    { "src": "./Backend/server.js", "use": "@vercel/node" },
-    { "src": "./Frontend/package.json", "use": "@vercel/static-build", "config": { "distDir": "build" } }
+    {
+      "src": "./Backend/server.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "./Frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    }
   ]
 }
