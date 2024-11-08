@@ -33,7 +33,7 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 
 // Start server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT_B || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

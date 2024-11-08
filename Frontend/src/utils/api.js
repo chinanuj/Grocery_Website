@@ -2,7 +2,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:5001', // Fallback to localhost for development
+  
+  baseURL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000', // Fallback to localhost for development
   headers: {
     'Content-Type': 'application/json',
   },
