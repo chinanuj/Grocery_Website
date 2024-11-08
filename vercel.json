@@ -1,0 +1,29 @@
+{
+    "projects": [
+      {
+        "name": "frontend",
+        "root": "./Frontend",
+        "buildCommand": "npm install",
+        "devCommand": "npm start",
+        "framework": null
+      },
+      {
+        "name": "backend",
+        "root": "./Backend",
+        "buildCommand": "npm install",
+        "outputDirectory": ".",
+        "framework": null
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "/api/(.*)",
+        "destination": "/Backend/server.js"
+      },
+      {
+        "source": "/(.*)",
+        "destination": "/Frontend/$1"
+      }
+    ]
+  }
+  
