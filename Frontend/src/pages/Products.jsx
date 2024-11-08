@@ -17,7 +17,7 @@ const Products = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await api.get('http://localhost:5000/api/products');
+      const response = await api.get('/api/products');
       setProducts(response.data.products);
     } catch (error) {
       setAlert({
@@ -42,7 +42,7 @@ const Products = () => {
 
     try {
       console.log('Adding to cart:', productId);
-      const response = await api.post('http://localhost:5000/api/cart/add', {
+      const response = await api.post('/api/cart/add', {
         product_id: productId,
         quantity: 1,
       });
