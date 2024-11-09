@@ -23,7 +23,7 @@ const Cart = ({ onNavigate }) => {
   const fetchCart = async () => {
     try {
       setIsLoading(true);
-      const response = await api.get('/api/cart');
+      const response = await api.get('http://localhost:5001/api/cart');
       setCart(response.data.cart);
       await fetchProductDetails(response.data.cart);
     } catch (error) {
@@ -41,7 +41,7 @@ const Cart = ({ onNavigate }) => {
     try {
       const productData = {};
       for (const item of cartItems) {
-        const productResponse = await api.get(`/api/products/${item.product_id._id}`);
+        const productResponse = await api.get(`http://localhost:5001/api/products/${item.product_id._id}`);
         productData[item.product_id._id] = productResponse.data;
       }
       setProducts(productData);
@@ -52,7 +52,7 @@ const Cart = ({ onNavigate }) => {
 
   const removeFromCart = async (productId) => {
     try {
-      const response = await api.delete(`/api/cart/${productId}`);
+      const response = await api.delete(`http://localhost:5001/api/cart/${productId}`);
       setAlert({ type: 'success', message: response.data.message });
       fetchCart();
     } catch (error) {
@@ -66,7 +66,7 @@ const Cart = ({ onNavigate }) => {
 
   const placeOrder = async () => {
     try {
-      const response = await api.post('/api/orders');
+      const response = await api.post('http://localhost:5001/api/orders');
       setAlert({ type: 'success', message: response.data.message });
       setCart([]);
     } catch (error) {

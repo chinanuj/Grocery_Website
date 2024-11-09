@@ -17,7 +17,7 @@ const Products = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await api.get('/api/products');
+      const response = await api.get('http://localhost:5001/api/products');
       setProducts(response.data.products);
     } catch (error) {
       setAlert({
@@ -31,18 +31,18 @@ const Products = () => {
   const addToCart = async (productId) => {
     if (!user) {
       setAlert({ type: 'warning', message: 'Please login to add items to cart.' });
-      
+
       // Redirect to login page after 1.8 seconds
       setTimeout(() => {
         navigate('/login');
       }, 1800);
-      
+
       return; // Exit early if the user is not logged in
     }
 
     try {
       console.log('Adding to cart:', productId);
-      const response = await api.post('/api/cart/add', {
+      const response = await api.post('http://localhost:5001/api/cart/add', {
         product_id: productId,
         quantity: 1,
       });
