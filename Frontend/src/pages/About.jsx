@@ -14,7 +14,7 @@ const About = () => {
     {
       icon: <Store className="w-8 h-8 text-green-600" />,
       title: "Campus Partnerships",
-      description: "Exclusive partnerships with KB(Kendriya Bhandar) and S-mart to bring you the best of campus convenience."
+      description: "Exclusive partnerships with S-mart to bring you the best of campus convenience."
     },
     {
       icon: <Clock className="w-8 h-8 text-green-600" />,
@@ -92,7 +92,7 @@ const About = () => {
                 <ul className="space-y-3 text-gray-600">
                   <li className="flex items-start">
                     <span className="mr-2">•</span>
-                    Exclusive partnership with KB(Kendriya Bhandar) and S-mart
+                    Exclusive partnership with S-mart
                   </li>
                   <li className="flex items-start">
                     <span className="mr-2">•</span>

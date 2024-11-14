@@ -27,14 +27,16 @@ const AuthProvider = ({ children }) => {
   const login = async (credentials) => {
     try {
       const response = await api.post('http://localhost:5001/api/auth/login', credentials);
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
-        const decoded = jwtDecode(response.data.token); // Correct usage
+      console.log(response);
+      if (response.data.accessToken) {
+        localStorage.setItem('token', response.data.accessToken);
+        const decoded = jwtDecode(response.data.accessToken); // Correct usage
         setUser({ user_id: decoded.sub });
         return { success: true };
       }
       return { success: false, message: response.data.message };
     } catch (error) {
+      console.log(error);
       return { success: false, message: error.response?.data?.message || 'Login failed.' };
     }
   };
