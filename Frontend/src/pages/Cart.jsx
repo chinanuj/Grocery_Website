@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingCart, Trash2, Package, AlertCircle, CheckCircle, X } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
@@ -22,30 +22,26 @@ const AlertNotification = ({ alert, onClose }) => {
       <div className={`transform transition-all duration-300 ease-in-out
         ${alert ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}
         max-w-sm bg-white rounded-lg shadow-lg overflow-hidden`}>
-        <div className={`flex items-center gap-3 p-4 border-l-4 ${
-          alert.type === 'error' ? 'border-red-500 bg-red-50' : 'border-green-500 bg-green-50'
-        }`}>
+        <div className={`flex items-center gap-3 p-4 border-l-4 ${alert.type === 'error' ? 'border-red-500 bg-red-50' : 'border-green-500 bg-green-50'
+          }`}>
           {alert.type === 'error' ? (
             <AlertCircle className="h-5 w-5 text-red-500" />
           ) : (
             <CheckCircle className="h-5 w-5 text-green-500" />
           )}
-          
-          <p className={`flex-1 text-sm font-medium ${
-            alert.type === 'error' ? 'text-red-600' : 'text-green-600'
-          }`}>
+
+          <p className={`flex-1 text-sm font-medium ${alert.type === 'error' ? 'text-red-600' : 'text-green-600'
+            }`}>
             {alert.message}
           </p>
-          
+
           <button
             onClick={onClose}
-            className={`p-1 rounded-full hover:bg-opacity-20 transition-colors ${
-              alert.type === 'error' ? 'hover:bg-red-200' : 'hover:bg-green-200'
-            }`}
+            className={`p-1 rounded-full hover:bg-opacity-20 transition-colors ${alert.type === 'error' ? 'hover:bg-red-200' : 'hover:bg-green-200'
+              }`}
           >
-            <X className={`h-4 w-4 ${
-              alert.type === 'error' ? 'text-red-500' : 'text-green-500'
-            }`} />
+            <X className={`h-4 w-4 ${alert.type === 'error' ? 'text-red-500' : 'text-green-500'
+              }`} />
           </button>
         </div>
       </div>
@@ -53,7 +49,7 @@ const AlertNotification = ({ alert, onClose }) => {
   );
 };
 
-const Cart = ({ onNavigate }) => {
+const Cart = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [cart, setCart] = useState([]);
@@ -61,15 +57,8 @@ const Cart = ({ onNavigate }) => {
   const [alert, setAlert] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    if (!user) {
-      navigate('/cart');
-      return;
-    }
-    fetchCart();
-  }, [user, navigate]);
-
-  const fetchCart = async () => {
+  // Wrapping fetchCart with useCallback to avoid dependency issues
+  const fetchCart = useCallback(async () => {
     try {
       setIsLoading(true);
       const response = await api.get('http://localhost:5001/api/cart');
@@ -84,7 +73,15 @@ const Cart = ({ onNavigate }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    fetchCart();
+  }, [user, navigate, fetchCart]);
 
   const fetchProductDetails = async (cartItems) => {
     try {
@@ -93,7 +90,6 @@ const Cart = ({ onNavigate }) => {
         const productResponse = await api.get(`http://localhost:5001/api/products/${item.product_id._id}`);
         productData[item.product_id._id] = productResponse.data;
       }
-      console.log(productData);
       setProducts(productData);
     } catch (error) {
       console.error('Error fetching product details:', error);
@@ -106,11 +102,10 @@ const Cart = ({ onNavigate }) => {
 
   const removeFromCart = async (productId) => {
     try {
-      console.log(productId)
-      const response = await api.delete(`http://localhost:5001/api/cart/${productId}`);
-      setAlert({ 
-        type: 'success', 
-        message: 'Item successfully removed from cart' 
+      await api.delete(`http://localhost:5001/api/cart/${productId}`);
+      setAlert({
+        type: 'success',
+        message: 'Item successfully removed from cart'
       });
       fetchCart();
     } catch (error) {
@@ -124,10 +119,10 @@ const Cart = ({ onNavigate }) => {
 
   const placeOrder = async () => {
     try {
-      const response = await api.post('http://localhost:5001/api/orders');
-      setAlert({ 
-        type: 'success', 
-        message: 'Order placed successfully!' 
+      await api.post('http://localhost:5001/api/orders');
+      setAlert({
+        type: 'success',
+        message: 'Order placed successfully!'
       });
       setCart([]);
     } catch (error) {
@@ -153,11 +148,11 @@ const Cart = ({ onNavigate }) => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
-      <AlertNotification 
-        alert={alert} 
-        onClose={() => setAlert(null)} 
+      <AlertNotification
+        alert={alert}
+        onClose={() => setAlert(null)}
       />
-      
+
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
@@ -182,7 +177,7 @@ const Cart = ({ onNavigate }) => {
               if (!product) return null;
               return (
                 <div
-                  key={item.product_id}
+                  key={item.product_id._id}
                   className="bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow overflow-hidden"
                 >
                   <div className="p-6">
