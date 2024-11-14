@@ -18,7 +18,7 @@ connectToDatabase();
 
 // Middleware
 app.use(cors({
-    origin: 'https://grocery-website-1.onrender.com',
+    origin: '*',
     credentials: true,
 }));
 app.use(express.json());
